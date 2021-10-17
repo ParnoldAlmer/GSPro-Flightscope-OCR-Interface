@@ -83,11 +83,11 @@ This is an example of how to list things you need to use the software and how to
   ```sh
   pip install opencv-python
   ```
-  * mss
+* mss
   ```sh
   pip install -U --user mss
   ```
-    * numpy
+* numpy
   ```sh
   pip install numpy
 
