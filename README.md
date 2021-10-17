@@ -75,9 +75,22 @@ To get a local copy up and running follow these simple example steps.
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
-* npm
+* pytesseract
   ```sh
-  npm install npm@latest -g
+  pip install pytesseract
+  ```
+* opencv-python
+  ```sh
+  pip install opencv-python
+  ```
+  * mss
+  ```sh
+  pip install -U --user mss
+  ```
+    * numpy
+  ```sh
+  pip install numpy
+
   ```
 
 ### Installation
