@@ -1,3 +1,11 @@
+#ocr script to intergrate mevo+ launch monitor with gspro openapi, can be adapted to any device.
+#
+##todo list##
+#pyautogui get tuple of window to screenshot
+#algo to crop based off proprotions instead of exact pixels 
+#recieve json over tcp, confirm send
+#add total carry, CHS, AOA
+
 import time
 import math
 import numpy
@@ -9,22 +17,16 @@ import json
 import socket
 import sys
 
-##todo list##
-#pyautogui get tuple of window to screenshot
-#algo to crop based off proprotions instead of exact pixels 
-#recieve json over tcp, confirm send
-#add total carry, CHS, AOA
-
 #tesseract path
-pytesseract.pytesseract.tesseract_cmd = r'C:\Users\Shane\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
+pytesseract.pytesseract.tesseract_cmd = r'C:\Users\*username*\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
 
 #open socket (SOCK_STREAM means a TCP)
 HOST, PORT = "localhost", 921
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.connect((HOST, PORT))
 
-#define screen grab selection
-mon = {'top': 240, 'left': 360, 'width': 120, 'height': 525}
+#define screen grab selection, using "letsview" iphone11 screen mirroed and window in top left corner of screen, need to adjust this for each case likely.
+mon = {'top': 240, 'left': 360, 'width': 120, 'height': 525} #working on a automated soltuion
 
 #shot counter, start at zero
 shot_count = 0
@@ -86,8 +88,7 @@ with mss.mss() as sct: #screenshot loop
             hla = float_hla*-1 #if L set negative
         else:
             hla = float_hla
-        
-                
+                       
         #check if vars have changed
         if ballspeed != ballspeed_last or totalspin != totalspin_last or sa != sa_last or hla != hla_last or vla != vla_last :
             
@@ -134,8 +135,7 @@ with mss.mss() as sct: #screenshot loop
 
             #TCP socket send
             sock.sendall(json.dumps(jsondata).encode("utf-8"))
-
-            
+          
 sock.close() #close TCP socket at end
 
 
