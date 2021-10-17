@@ -74,6 +74,9 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
+* tesseract
+Tesseract binnary: https://github.com/UB-Mannheim/tesseract/wiki
+
 This is an example of how to list things you need to use the software and how to install them.
 * pytesseract
   ```sh
