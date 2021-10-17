@@ -53,13 +53,6 @@ Here's why:
 
 
 
-### Built With
-
-* [Tesseract](https://github.com/tesseract-ocr/tesseract)
-* [OpenCV](https://pypi.org/project/opencv-python/)
-
-
-
 <!-- GETTING STARTED -->
 ## Getting Started
 
