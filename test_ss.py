@@ -1,3 +1,5 @@
+#used to test screen shot location and save to file
+
 import time
 import math
 import re
