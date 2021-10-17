@@ -9,8 +9,6 @@ import json
 import socket
 import sys
 
-
-
 ##todo list##
 #pyautogui get tuple of window to screenshot
 #algo to crop based off proprotions instead of exact pixels 
