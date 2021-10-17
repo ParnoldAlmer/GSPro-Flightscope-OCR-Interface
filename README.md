@@ -52,17 +52,11 @@ Here's why:
 * OCR is a passive method to observe data
 
 
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
 
 ### Built With
 
 * [Tesseract](https://github.com/tesseract-ocr/tesseract)
 * [OpenCV](https://pypi.org/project/opencv-python/)
-
-
-<p align="right">(<a href="#top">back to top</a>)</p>
 
 
 
