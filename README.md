@@ -1,7 +1,16 @@
 # ocr-gspro-interface
 <div id="top"></div>
 
+<!-- PROJECT LOGO -->
+<br />
 
+  <h3 align="center">OCR interface for GSpro</h3>
+
+  <p align="center">
+    An Optical Character Recognition (OCR) interface for GSpro golf simulator!
+    <br />
+  </p>
+</div>
 
 <!-- TABLE OF CONTENTS -->
 <details>
