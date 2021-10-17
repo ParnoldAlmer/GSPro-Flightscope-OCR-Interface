@@ -50,7 +50,7 @@ An open source project to intergrate all launch monitors with GSpro's open API.
 Here's why:
 * Currently no solution exists for using personal launch monitors with gspro, gc2 is the cheapest option.
 * OCR is a passive method to observe data
-* 
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -93,26 +93,7 @@ Tesseract binnary: https://github.com/UB-Mannheim/tesseract/wiki
   pip install numpy
 
   ```
-
-### Installation
-
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/your_username_/Project-Name.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
+  
 
 <!-- USAGE EXAMPLES -->
 ## Usage
@@ -133,8 +114,6 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 - [] Add Additional Templates w/ Examples
 - [] Add "components" document to easily copy & paste sections of the readme
 
-
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
