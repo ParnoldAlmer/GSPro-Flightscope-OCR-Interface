@@ -96,8 +96,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## Roadmap
 
-- [] Automate screenshot window capture
-- [] Crop screenshot algorithmically 
+- [] User snips each launch varible with mouse via pyautogui https://stackoverflow.com/questions/57551939/making-snipping-tool-from-python-using-wx-and-pyautogui
 - [] Recieve json over tcp, confirm send
 - [] Add total carry, CHS, AOA
 
