@@ -73,7 +73,7 @@ Tesseract binnary: https://github.com/UB-Mannheim/tesseract/wiki
   ```
 * mss
   ```sh
-  pip install -U --user mss
+  pip install mss
   ```
 * numpy
   ```sh
