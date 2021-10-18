@@ -1,10 +1,4 @@
-#ocr script to intergrate mevo+ launch monitor with gspro openapi, can be adapted to any device.
-#
-##todo list##
-#pyautogui get tuple of window to screenshot
-#algo to crop based off proprotions instead of exact pixels 
-#recieve json over tcp, confirm send
-#add total carry, CHS, AOA
+#OCR GSpro Interface v0.4
 
 import time
 import math
