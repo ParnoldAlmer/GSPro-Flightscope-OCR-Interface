@@ -21,11 +21,11 @@ import sys
 pytesseract.pytesseract.tesseract_cmd = r'C:\Users\*username*\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
 
 #open socket (SOCK_STREAM means a TCP)
-HOST, PORT = "localhost", 921
+HOST, PORT = "localhost", 921 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-sock.connect((HOST, PORT))
+sock.connect((HOST, PORT)) #connect to GSpro Open API
 
-#define screen grab selection, using "letsview" iphone11 screen mirroed and window in top left corner of screen, need to adjust this for each case likely.
+#define screen grab selection, using "letsview" iphone11 screen mirrored and window in top left corner of screen, need to adjust this for each case likely. use test_ss.py to determine top,left bottom,left.
 mon = {'top': 240, 'left': 360, 'width': 120, 'height': 525} #working on a automated soltuion
 
 #shot counter, start at zero
@@ -133,7 +133,7 @@ with mss.mss() as sct: #screenshot loop
             jsondata['ShotDataOptions'] = ShotDataOptions
             print(json.dumps(jsondata))
 
-            #TCP socket send
+            #TCP socket send to GSpro
             sock.sendall(json.dumps(jsondata).encode("utf-8"))
           
 sock.close() #close TCP socket at end
