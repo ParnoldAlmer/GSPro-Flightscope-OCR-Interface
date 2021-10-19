@@ -11,8 +11,6 @@ import json
 import socket
 import sys
 
-#tesseract path for windows
-#pytesseract.pytesseract.tesseract_cmd = r'C:\Users\*username*\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
 
 #open socket (SOCK_STREAM means a TCP)
 HOST, PORT = "192.168.1.201", 921 #remote server running gspro
