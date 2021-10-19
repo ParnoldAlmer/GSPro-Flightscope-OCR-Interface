@@ -78,21 +78,6 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
-
-<!-- CONTRIBUTING -->
-## Contributing
-
-In general, we follow the "fork-and-pull" Git workflow.
-
- 1. **Fork** the repo on GitHub
- 2. **Clone** the project to your own machine
- 3. **Commit** changes to your own branch
- 4. **Push** your work back up to your fork
- 5. Submit a **Pull request** so that we can review your changes
-
-
-
-
 <!-- LICENSE -->
 ## License
 Shield: [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
