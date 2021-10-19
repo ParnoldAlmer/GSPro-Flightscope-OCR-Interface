@@ -19,8 +19,8 @@ HOST, PORT = "192.168.1.201", 921 #remote server running gspro
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.connect((HOST, PORT)) #connect to GSpro Open API
 
-#define screen grab selection, using "letsview" iphone11 screen mirrored and window in top left corner of screen, need to adjust this for each case likely. use test_ss.py to determine top,left bottom,left.
-mon = {'top': 163, 'left': 274, 'width': 120, 'height': 525} #working on a automated soltuion
+#define screen grab selection, using iphone11 usb to macbook air into quicktime
+mon = {'top': 163, 'left': 274, 'width': 120, 'height': 525} #takes screenshot of window, leave in top left corner
 
 #shot counter, start at zero
 shot_count = 0
@@ -51,8 +51,8 @@ with mss.mss() as sct: #screenshot loop
         sa = pytesseract.image_to_string(im_sa, lang='eng',config='--psm 6 -c page_separator='' tessedit_char_whitelist=.0123456789LR')
         totalspin = pytesseract.image_to_string(im_totalspin, lang='eng',config='--psm 6 -c page_separator='' tessedit_char_whitelist=.0123456789LR')    
         
-        #print (f"tessBallspeed = {ballspeed}")
-        #print (f"tessVLA = {vla}")
+        #print (f"tessVLA = {vla}") #use this to debug ocr
+        #cv2.imshow('im', im) #use this to debug screenshot location
         #cv2.imshow('im', im_vla) #use this to debug screenshot crops
         #cv2.waitKey() #pause
 
