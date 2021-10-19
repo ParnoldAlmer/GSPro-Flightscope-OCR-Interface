@@ -56,14 +56,12 @@ with mss.mss() as sct: #screenshot loop
         #cv2.imshow('im', im_vla) #use this to debug screenshot crops
         #cv2.waitKey() #pause
 
-
         #clean up output from ocr
         ballspeed = ballspeed.strip('\n |')
         vla = vla.strip('\n |')
         hla = hla.strip('\n |')
         sa = sa.strip('\n |')
         totalspin = totalspin.strip('\n |')
-        
         
         #parse SA
         converted_sa = re.findall("\d+\.\d+", sa)
