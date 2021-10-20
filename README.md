@@ -46,10 +46,6 @@ to be added
   ```sh
   pip install opencv-python
   ```
-* mss
-  ```sh
-  pip install mss
-  ```
 * numpy
   ```sh
   pip install numpy
