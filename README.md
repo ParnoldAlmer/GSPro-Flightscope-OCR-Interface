@@ -34,8 +34,10 @@ to be added
 
 ### Prerequisites
 
-Tesseract binnary: https://github.com/UB-Mannheim/tesseract/wiki
-
+* tesseract
+  ```sh
+  brew install tesseract
+  ```
 * pytesseract
   ```sh
   pip install pytesseract
@@ -69,10 +71,9 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## Roadmap
 
-- [] user defined screen capture via pyautogui https://stackoverflow.com/questions/57551939/making-snipping-tool-from-python-using-wx-and-pyautogui
+- [] user defined screen capture via Quartz 
 - [] Recieve json over tcp, confirm send
 - [] Add total carry, CHS, AOA
-- [] Develop wxPython frontend
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
