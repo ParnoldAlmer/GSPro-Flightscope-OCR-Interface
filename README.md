@@ -67,7 +67,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## Roadmap
 
-- [] user defined screen capture via Quartz 
+- [X] auto screen capture via Quartz 
 - [] Recieve json over tcp, confirm send
 - [] Add total carry, CHS, AOA
 
