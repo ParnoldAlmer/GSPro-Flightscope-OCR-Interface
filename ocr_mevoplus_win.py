@@ -1,4 +1,5 @@
 #OCR GSpro Interface v0.4
+# I haven't updated this version yet to auto screenshot the appropriate window, see tools folder for scripts to help find mon dimensions
 
 import time
 import math
