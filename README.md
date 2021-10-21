@@ -21,7 +21,7 @@
 [![click for video](https://img.youtube.com/vi/Xq0pr2vBIgo/0.jpg)](https://www.youtube.com/watch?v=Xq0pr2vBIgo)
 
 
-An open source project to intergrate all launch monitors with GSpro's open API.
+An open source project to intergrate launch monitors using OCR with GSpro's open API.
 
 Here's why:
 * Currently no solution exists for using personal launch monitors ($600-$2000) with gspro, currently uneekor QED ($7000) and gc2 ($8400 new | $5000 used) are the cheapest options.
