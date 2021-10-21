@@ -18,7 +18,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-![Product Name Screen Shot][![GSpro proof of concept](https://img.youtube.com/vi/Xq0pr2vBIgo/0.jpg)](https://www.youtube.com/watch?v=Xq0pr2vBIgo)
+[![click for video](https://img.youtube.com/vi/Xq0pr2vBIgo/0.jpg)](https://www.youtube.com/watch?v=Xq0pr2vBIgo)
 
 
 An open source project to intergrate all launch monitors with GSpro's open API.
