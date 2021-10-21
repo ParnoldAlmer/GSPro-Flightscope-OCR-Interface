@@ -18,7 +18,8 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-![Product Name Screen Shot][product-screenshot]
+![Product Name Screen Shot][![GSpro proof of concept](https://img.youtube.com/vi/Xq0pr2vBIgo/0.jpg)](https://www.youtube.com/watch?v=Xq0pr2vBIgo)
+
 
 An open source project to intergrate all launch monitors with GSpro's open API.
 
@@ -100,4 +101,3 @@ This work is licensed under a
 [license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/Capture.JPG
