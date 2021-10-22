@@ -61,8 +61,9 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## Roadmap
 
-- [X] auto screen capture via Quartz 
-- [X] more robust error handling and data validation
+- [X] Auto window capture via Quartz 
+- [X] More robust error handling and data validation
+- [] Screencapture with mss to improve speed
 - [] Executable package
 - [] Recieve json over tcp, confirm send
 - [] Add total carry, CHS, AOA
