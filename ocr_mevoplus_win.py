@@ -1,5 +1,6 @@
 #OCR GSpro Interface v0.4
 # I haven't updated this version yet to auto screenshot the appropriate window, see tools folder for scripts to help find mon dimensions
+# windows poses challenges, need to run an android emulator like bluestacks or find a better way to mirror phone to screen. 
 
 import time
 import math
