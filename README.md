@@ -18,8 +18,6 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-##[![click for video](https://img.youtube.com/vi/Xq0pr2vBIgo/0.jpg)](https://www.youtube.com/watch?v=Xq0pr2vBIgo)
-
 
 An open source project to intergrate launch monitors using OCR with GSpro's open API.
 
