@@ -1,4 +1,4 @@
-#OCR GSpro Interface v1.0 for osx
+#OCR GSpro Interface v1.2 for osx
 
 import time
 import math
@@ -10,17 +10,16 @@ import json
 import socket
 import sys
 from Quartz import CGWindowListCopyWindowInfo, kCGNullWindowID, kCGWindowListOptionAll
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 from PIL import Image
 import os
 from uuid import uuid4
 
 
 #open socket (SOCK_STREAM means a TCP)
-HOST, PORT = "192.168.1.201", 921 #remote server running gspro
+HOST, PORT = "192.168.1.142", 921 #remote server running gspro
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.connect((HOST, PORT)) #connect to GSpro Open API
-
 
 #shot counter, start at zero
 shot_count = 0
@@ -35,7 +34,6 @@ vla_last = None
 gen_filename = lambda : str(uuid4())[-10:] + '.jpg'
 window_name = "Movie Recording"
 
-
 def capture_window(window_name):
     window_list = CGWindowListCopyWindowInfo(kCGWindowListOptionAll, kCGNullWindowID)
     for window in window_list:
@@ -45,13 +43,8 @@ def capture_window(window_name):
                 os.system('screencapture -l %s %s' %(window['kCGWindowNumber'], filename))
                 capture_window.im = Image.open(filename)
                 os.remove(filename)
-                #break
         except:
             pass
-    #else:
-        #raise Exception('Window %s not found.'%window_name)
-
-
 
 #screenshot loop
 while True:
@@ -69,12 +62,11 @@ while True:
     im_sa = im[900:950, 645:785]
     im_totalspin = im[1060:1115, 645:785]       
 
-    
+    #debug stuff
     #print (f"tessBallspeed = {ballspeed}")
     #print (f"tessVLA = {vla}")
     #cv2.imshow('im', im_totalspin) #use this to debug screenshot crops
     #cv2.waitKey() #pause
-
 
     #ocr
     ballspeed = pytesseract.image_to_string(im_ballspeed, lang='eng',config='--psm 6 -c page_separator='' tessedit_char_whitelist=.0123456789LR')
@@ -83,8 +75,6 @@ while True:
     sa = pytesseract.image_to_string(im_sa, lang='eng',config='--psm 6 -c page_separator='' tessedit_char_whitelist=.0123456789LR')
     totalspin = pytesseract.image_to_string(im_totalspin, lang='eng',config='--psm 6 -c page_separator='' tessedit_char_whitelist=.0123456789LR')    
 
-
-
     #clean up output from ocr
     ballspeed = ballspeed.strip('\n |')
     vla = vla.strip('\n |')
@@ -92,10 +82,16 @@ while True:
     sa = sa.strip('\n |')
     totalspin = totalspin.strip('\n |')
     
-    
+    #data validation 
+    if "." not in ballspeed or "." not in vla or "." not in hla or "." not in sa: #check for decimal place
+        continue #restart loop
+
     #parse SA
     converted_sa = re.findall("\d+\.\d+", sa)
-    float_sa = float('.'.join(str(ele) for ele in converted_sa))
+    try:
+        float_sa = float('.'.join(str(ele) for ele in converted_sa))
+    except ValueError: 
+        continue
     #parse spinaxis laterality 
     lat_sa = sa[-1] #get last char from string
     left = "L" #define L is left
@@ -106,7 +102,10 @@ while True:
 
     #parse HLA
     converted_hla = re.findall("\d+\.\d+", hla)
-    float_hla = float('.'.join(str(ele) for ele in converted_hla))
+    try:
+        float_hla = float('.'.join(str(ele) for ele in converted_hla))
+    except ValueError:
+        continue
     #parse HLA laterality 
     lat_hla = hla[-1] #get last char from string
     left = "L" #define L is left
@@ -116,51 +115,56 @@ while True:
         hla = float_hla
                    
     #check if vars have changed
-    if ballspeed != ballspeed_last or totalspin != totalspin_last or sa != sa_last or hla != hla_last or vla != vla_last :
-        
-        #update last vars
-        ballspeed_last = ballspeed
-        totalspin_last = totalspin
-        sa_last = sa
-        hla_last = hla
-        vla_last = vla
+    if sum([
+    ballspeed!=ballspeed_last,
+    totalspin!=totalspin_last,
+    sa!=sa_last,
+    hla!=hla_last,
+    vla!=vla_last,
+    ])>=2:
 
-        #shot counter, add +1 each loop
-        shot_count = shot_count + 1 
+            ballspeed_last = ballspeed
+            totalspin_last = totalspin
+            sa_last = sa
+            hla_last = hla
+            vla_last = vla
 
-        print (f"Shot Count = {shot_count}")        
-        print (f"Ballspeed = {ballspeed}")
-        print (f"VLA = {vla}")
-        print (f"HLA = {hla}")
-        print (f"Spin Axis = {sa}")
-        print (f"Total Spin = {totalspin}")
+            #shot counter, add +1 each loop
+            shot_count = shot_count + 1 
 
-        #data to dict to nested JSON
-        jsondata = {}
-        DeviceID = 'GSPro LM 1.1'
-        Units = 'Yards'
-        ShotNumber = shot_count
-        APIversion = '1'
-        BallData = {}
-        ShotDataOptions = {}
-        BallData['Speed'] = ballspeed
-        BallData['SpinAxis'] = sa
-        BallData['TotalSpin'] = totalspin
-        BallData['HLA'] = hla
-        BallData['VLA'] = vla
-        ShotDataOptions['ContainsBallData'] = 'true'
-        ShotDataOptions['ContainsClubData'] = 'false'
+            print (f"Shot Count = {shot_count}")        
+            print (f"Ballspeed = {ballspeed}")
+            print (f"VLA = {vla}")
+            print (f"HLA = {hla}")
+            print (f"Spin Axis = {sa}")
+            print (f"Total Spin = {totalspin}")
 
-        jsondata['DeviceID'] = DeviceID
-        jsondata['Units'] = Units
-        jsondata['ShotNumber'] = ShotNumber
-        jsondata['APIversion'] = APIversion
-        jsondata['BallData'] = BallData
-        jsondata['ShotDataOptions'] = ShotDataOptions
-        print(json.dumps(jsondata))
+            #data to dict to nested JSON
+            jsondata = {}
+            DeviceID = 'GSPro LM 1.1'
+            Units = 'Yards'
+            ShotNumber = shot_count
+            APIversion = '1'
+            BallData = {}
+            ShotDataOptions = {}
+            BallData['Speed'] = ballspeed
+            BallData['SpinAxis'] = sa
+            BallData['TotalSpin'] = totalspin
+            BallData['HLA'] = hla
+            BallData['VLA'] = vla
+            ShotDataOptions['ContainsBallData'] = 'true'
+            ShotDataOptions['ContainsClubData'] = 'false'
 
-        #TCP socket send to GSpro
-        sock.sendall(json.dumps(jsondata).encode("utf-8"))
+            jsondata['DeviceID'] = DeviceID
+            jsondata['Units'] = Units
+            jsondata['ShotNumber'] = ShotNumber
+            jsondata['APIversion'] = APIversion
+            jsondata['BallData'] = BallData
+            jsondata['ShotDataOptions'] = ShotDataOptions
+            print(json.dumps(jsondata))
+
+            #TCP socket send to GSpro
+            sock.sendall(json.dumps(jsondata).encode("utf-8"))
           
 sock.close() #close TCP socket at end
 
