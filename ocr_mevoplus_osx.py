@@ -16,7 +16,6 @@ import os
 from PyObjCTools import Conversion
 import concurrent.futures
 
-
 #open socket (SOCK_STREAM means a TCP)
 HOST, PORT = "192.168.1.228", 921 #remote server running gspro
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -31,7 +30,6 @@ totalspin_last = None
 sa_last = None
 hla_last = None
 vla_last = None
-
 
 window_name = "Movie Recording"
 
@@ -49,22 +47,17 @@ def GetWindowBounds(window_name):
             print ("Window not found.")
             continue
 
-
 def ocr_img(img, ocrd):
     with PyTessBaseAPI(psm=6) as api:
         api.SetImageBytes(img.tobytes(), img.shape[1], img.shape[0], 1, img.shape[1])
         return api.GetUTF8Text()
 
-
 GetWindowBounds("Movie Recording")
-
-
 
 #screenshot loop
 with mss.mss() as sct:
     while True:
     
-
         # capture
         monitor = {"top": GetWindowBounds.bounds.get('Y'), "left": GetWindowBounds.bounds.get('X'), "width": GetWindowBounds.bounds.get('Width'), "height": GetWindowBounds.bounds.get('Height')}
         
@@ -82,22 +75,17 @@ with mss.mss() as sct:
         im_totalspin = im[1005:1060, 570:725]
         #im_carry = im[1170:1225, 570:725]  
 
-
         im_ballspeed = cv2.resize(im_ballspeed, None, fx=1.2, fy=1.2, interpolation=cv2.INTER_CUBIC)
         im_vla = cv2.resize(im_vla, None, fx=1.2, fy=1.2, interpolation=cv2.INTER_CUBIC)
         im_hla = cv2.resize(im_hla, None, fx=1.2, fy=1.2, interpolation=cv2.INTER_CUBIC)
         im_sa = cv2.resize(im_sa, None, fx=1.2, fy=1.2, interpolation=cv2.INTER_CUBIC)
         im_totalspin = cv2.resize(im_totalspin, None, fx=1.2, fy=1.2, interpolation=cv2.INTER_CUBIC)
 
-
-
         #cv2.imshow('im', im_sa) #use this to debug screenshot crops
         #cv2.waitKey() #pause
 
-
         images = [im_ballspeed, im_vla, im_hla, im_sa, im_totalspin]
         ocr_data = [None, None, None, None, None]
-
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
             future_to_idx = {executor.submit(ocr_img, img, ocrd): idx for idx, (img, ocrd) in enumerate(zip(images, ocr_data))}
@@ -109,8 +97,7 @@ with mss.mss() as sct:
                     ocr_data.append(idx)
                 except Exception as e:
                     print(f'pair {idx} generated an exception: {e}')
-                
-                
+                            
         ballspeed = result.get(0)
         totalspin = result.get(4)
         sa = result.get(3)
@@ -200,6 +187,6 @@ with mss.mss() as sct:
                 print(json.dumps(jsondata))
                 #TCP socket send to GSpro
                 sock.sendall(json.dumps(jsondata).encode("utf-8"))
-                
+               
                
 sock.close() #close TCP socket at end
