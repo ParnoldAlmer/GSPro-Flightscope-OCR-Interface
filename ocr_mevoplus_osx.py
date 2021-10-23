@@ -1,4 +1,4 @@
-#OCR GSpro Interface v1.2 for osx
+#OCR GSpro Interface v1.3 for osx
 
 import time
 import math
@@ -10,14 +10,12 @@ import json
 import socket
 import sys
 from Quartz import CGWindowListCopyWindowInfo, kCGNullWindowID, kCGWindowListOptionAll
-#import matplotlib.pyplot as plt
 from PIL import Image
 import os
 from uuid import uuid4
 
-
 #open socket (SOCK_STREAM means a TCP)
-HOST, PORT = "192.168.1.142", 921 #remote server running gspro
+HOST, PORT = "192.168.1.228", 921 #remote server running gspro
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.connect((HOST, PORT)) #connect to GSpro Open API
 
@@ -60,13 +58,13 @@ while True:
     im_vla = im[575:620, 645:785]
     im_hla = im[735:785, 645:785]
     im_sa = im[900:950, 645:785]
-    im_totalspin = im[1060:1115, 645:785]       
+    im_totalspin = im[1060:1115, 645:785]
 
-    #debug stuff
-    #print (f"tessBallspeed = {ballspeed}")
-    #print (f"tessVLA = {vla}")
-    #cv2.imshow('im', im_totalspin) #use this to debug screenshot crops
-    #cv2.waitKey() #pause
+ 
+    
+
+    cv2.imshow('im', im_ballspeed) #use this to debug screenshot crops
+    cv2.waitKey() #pause
 
     #ocr
     ballspeed = pytesseract.image_to_string(im_ballspeed, lang='eng',config='--psm 6 -c page_separator='' tessedit_char_whitelist=.0123456789LR')
@@ -167,8 +165,5 @@ while True:
             sock.sendall(json.dumps(jsondata).encode("utf-8"))
           
 sock.close() #close TCP socket at end
-
-
-        
         
         
