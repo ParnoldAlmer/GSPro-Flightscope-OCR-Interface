@@ -59,8 +59,8 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## Roadmap
 
-- [X] Auto window capture via Quartz 
 - [X] More robust error handling and data validation
+- [X] Get window bounds with Quartz 
 - [X] Screencapture with mss to improve speed
 - [X] Move to tesserocr OCR library for better performance (2x as fast+)
 - [X] Multithreading OCR
