@@ -1,4 +1,4 @@
-#OCR GSpro Interface v1.2 for osx
+#OCR GSpro Interface v1.3 for osx
 
 import time
 import math
@@ -57,19 +57,19 @@ def ocr_img(img, ocrd):
         return api.GetUTF8Text()
 
 
-
 GetWindowBounds("Movie Recording")
 #print(GetWindowBounds.bounds.get('X'))
 #print(GetWindowBounds.bounds.get('Y'))
 #print(GetWindowBounds.bounds.get('Height'))
 #print(GetWindowBounds.bounds.get('Width'))
 
-start = time.time()
 
 #screenshot loop
 with mss.mss() as sct:
     while True:
     
+        start = time.time()
+
         # capture
         monitor = {"top": GetWindowBounds.bounds.get('Y'), "left": GetWindowBounds.bounds.get('X'), "width": GetWindowBounds.bounds.get('Width'), "height": GetWindowBounds.bounds.get('Height')}
         
@@ -102,7 +102,8 @@ with mss.mss() as sct:
         #timer 0.05sec
 
         images = [im_ballspeed, im_vla, im_hla, im_sa, im_totalspin]
-        ocr_data = [ballspeed, vla, hla, sa, totalspin]       
+        ocr_data = [None, None, None, None, None]
+
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
             future_to_idx = {executor.submit(ocr_img, img, ocrd): idx for idx, (img, ocrd) in enumerate(zip(images, ocr_data))}
@@ -111,6 +112,7 @@ with mss.mss() as sct:
                 idx = future_to_idx[future]
                 try:
                     result[idx] = future.result()
+                    ocr_data.append(idx)
                 except Exception as e:
                     print(f'pair {idx} generated an exception: {e}')
                 
@@ -118,18 +120,11 @@ with mss.mss() as sct:
         # api is automatically finalized when used in a with-statement (context manager).
         # otherwise api.End() should be explicitly called when it's no longer needed.
 
-        print(result)
-
-        end = time.time()
-        print("The time of execution of above program is :", end-start)
-        print (f"Shot Count = {shot_count}")        
-        print (f"Ballspeed = {ballspeed}")
-        print (f"VLA = {vla}")
-        print (f"HLA = {hla}")
-        print (f"Spin Axis = {sa}")
-        print (f"Total Spin = {totalspin}")
-
-        #timer 1.1sec
+        ballspeed = result.get(0)
+        totalspin = result.get(4)
+        sa = result.get(3)
+        hla = result.get(2)
+        vla = result.get(1)
 
         #data validation 
         if "." not in ballspeed or "." not in vla or "." not in hla or "." not in sa: #check for decimal place
@@ -170,8 +165,6 @@ with mss.mss() as sct:
             hla = float_hla*-1 #if L set negative
         else:
             hla = float_hla
-        
-        #timer 1.26sec   
 
         #check if vars have changed
         #print ("check if vars changed before parsing json")
@@ -191,13 +184,6 @@ with mss.mss() as sct:
 
                 #shot counter, add +1 each loop
                 shot_count = shot_count + 1 
-
-                #print (f"Shot Count = {shot_count}")        
-                #print (f"Ballspeed = {ballspeed}")
-                #print (f"VLA = {vla}")
-                #print (f"HLA = {hla}")
-                #print (f"Spin Axis = {sa}")
-                #print (f"Total Spin = {totalspin}")
 
                 #data to dict to nested JSON
                 jsondata = {}
@@ -224,10 +210,11 @@ with mss.mss() as sct:
                 print(json.dumps(jsondata))
                 #TCP socket send to GSpro
                 #sock.sendall(json.dumps(jsondata).encode("utf-8"))
-                #timer 1.2sec
+                
+                end = time.time()
+                print("The time of execution is :", end-start)
+                
 
-                break
-          
 #sock.close() #close TCP socket at end
         
         
