@@ -1,11 +1,11 @@
-#OCR GSpro Interface v1.2 for osx
+#OCR GSpro Interface v1.3 for osx
 
 import time
 import math
 import numpy
 import re
 import cv2
-import pytesseract
+from tesserocr import PyTessBaseAPI
 import json
 import socket
 import sys
@@ -14,6 +14,8 @@ import mss
 import mss.tools
 import os
 from PyObjCTools import Conversion
+import concurrent.futures
+
 
 #open socket (SOCK_STREAM means a TCP)
 HOST, PORT = "192.168.1.228", 921 #remote server running gspro
@@ -29,6 +31,7 @@ totalspin_last = None
 sa_last = None
 hla_last = None
 vla_last = None
+
 
 window_name = "Movie Recording"
 
@@ -47,18 +50,26 @@ def GetWindowBounds(window_name):
             continue
 
 
+def ocr_img(img, ocrd):
+    with PyTessBaseAPI(psm=6) as api:
+        api.SetImageBytes(img.tobytes(), img.shape[1], img.shape[0], 1, img.shape[1])
+        return api.GetUTF8Text()
+
+
 GetWindowBounds("Movie Recording")
+
+
 
 #screenshot loop
 with mss.mss() as sct:
     while True:
     
+
         # capture
         monitor = {"top": GetWindowBounds.bounds.get('Y'), "left": GetWindowBounds.bounds.get('X'), "width": GetWindowBounds.bounds.get('Width'), "height": GetWindowBounds.bounds.get('Height')}
         
         # Grab the data
         im = sct.grab(monitor)
-        #print("snap")
         im = numpy.asarray(im) #screenshot to numpy array
         im = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY) #array to gray img
                  
@@ -67,26 +78,44 @@ with mss.mss() as sct:
         im_ballspeed = im[355:410, 570:725]
         im_vla = im[520:570, 570:725]
         im_hla = im[680:735, 570:725]
-        im_sa = im[845:895, 570:725]
+        im_sa = im[840:895, 570:725]
         im_totalspin = im[1005:1060, 570:725]
-        #im_carry = im[1170:1225, 570:725]       
+        #im_carry = im[1170:1225, 570:725]  
+
 
         im_ballspeed = cv2.resize(im_ballspeed, None, fx=1.2, fy=1.2, interpolation=cv2.INTER_CUBIC)
-        im_vla = cv2.resize(im_ballspeed, None, fx=1.2, fy=1.2, interpolation=cv2.INTER_CUBIC)
-        im_hla = cv2.resize(im_ballspeed, None, fx=1.2, fy=1.2, interpolation=cv2.INTER_CUBIC)
-        im_sa = cv2.resize(im_ballspeed, None, fx=1.2, fy=1.2, interpolation=cv2.INTER_CUBIC)
-        im_totalspin = cv2.resize(im_ballspeed, None, fx=1.2, fy=1.2, interpolation=cv2.INTER_CUBIC)
+        im_vla = cv2.resize(im_vla, None, fx=1.2, fy=1.2, interpolation=cv2.INTER_CUBIC)
+        im_hla = cv2.resize(im_hla, None, fx=1.2, fy=1.2, interpolation=cv2.INTER_CUBIC)
+        im_sa = cv2.resize(im_sa, None, fx=1.2, fy=1.2, interpolation=cv2.INTER_CUBIC)
+        im_totalspin = cv2.resize(im_totalspin, None, fx=1.2, fy=1.2, interpolation=cv2.INTER_CUBIC)
 
 
-        #cv2.imshow('im', im_ballspeed) #use this to debug screenshot crops
+
+        #cv2.imshow('im', im_sa) #use this to debug screenshot crops
         #cv2.waitKey() #pause
 
-        #ocr
-        ballspeed = pytesseract.image_to_string(im_ballspeed, lang='eng',config='--psm 6 -c page_separator='' tessedit_char_whitelist=.0123456789LR')
-        vla = pytesseract.image_to_string(im_vla, lang='eng',config='--psm 6 -c page_separator='' tessedit_char_whitelist=.0123456789LR')
-        hla = pytesseract.image_to_string(im_hla, lang='eng',config='--psm 6 -c page_separator='' tessedit_char_whitelist=.0123456789LR')
-        sa = pytesseract.image_to_string(im_sa, lang='eng',config='--psm 6 -c page_separator='' tessedit_char_whitelist=.0123456789LR')
-        totalspin = pytesseract.image_to_string(im_totalspin, lang='eng',config='--psm 6 -c page_separator='' tessedit_char_whitelist=0123456789')    
+
+        images = [im_ballspeed, im_vla, im_hla, im_sa, im_totalspin]
+        ocr_data = [None, None, None, None, None]
+
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+            future_to_idx = {executor.submit(ocr_img, img, ocrd): idx for idx, (img, ocrd) in enumerate(zip(images, ocr_data))}
+            result = {}
+            for future in concurrent.futures.as_completed(future_to_idx):
+                idx = future_to_idx[future]
+                try:
+                    result[idx] = future.result()
+                    ocr_data.append(idx)
+                except Exception as e:
+                    print(f'pair {idx} generated an exception: {e}')
+                
+                
+        ballspeed = result.get(0)
+        totalspin = result.get(4)
+        sa = result.get(3)
+        hla = result.get(2)
+        vla = result.get(1)
 
         #data validation 
         if "." not in ballspeed or "." not in vla or "." not in hla or "." not in sa: #check for decimal place
@@ -127,7 +156,7 @@ with mss.mss() as sct:
             hla = float_hla*-1 #if L set negative
         else:
             hla = float_hla
-                       
+
         #check if vars have changed
         if sum([
         ballspeed!=ballspeed_last,
@@ -169,10 +198,8 @@ with mss.mss() as sct:
                 jsondata['BallData'] = BallData
                 jsondata['ShotDataOptions'] = ShotDataOptions
                 print(json.dumps(jsondata))
-
                 #TCP socket send to GSpro
                 sock.sendall(json.dumps(jsondata).encode("utf-8"))
-          
+                
+               
 sock.close() #close TCP socket at end
-        
-        
