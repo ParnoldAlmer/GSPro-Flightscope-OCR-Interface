@@ -5,7 +5,6 @@ import math
 import numpy
 import re
 import cv2
-import pytesseract
 from tesserocr import PyTessBaseAPI
 import json
 import socket
