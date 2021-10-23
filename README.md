@@ -61,7 +61,9 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 
 - [X] Auto window capture via Quartz 
 - [X] More robust error handling and data validation
-- [] Screencapture with mss to improve speed
+- [X] Screencapture with mss to improve speed
+- [X] Move to tesserocr OCR library for better performance (2x as fast+)
+- [X] Multithreading OCR
 - [] Executable package
 - [] Recieve json over tcp, confirm send
 - [] Add total carry, CHS, AOA
