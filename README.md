@@ -35,10 +35,6 @@ to be added
 
 iPhone, Mac, and usb lightning cable
 
-* tesseract
-  ```sh
-  brew install tesseract
-  ```
 * ocr-gspro-interface
   ```sh
   PACKAGE COMING SOON
