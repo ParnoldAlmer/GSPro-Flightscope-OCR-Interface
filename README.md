@@ -37,17 +37,6 @@ to be added
 iPhone, Mac, and usb lightning cable
 
 
-<!-- USAGE EXAMPLES -->
-## Usage
-
-COMING SOON
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
 <!-- ROADMAP -->
 ## Roadmap
 
@@ -56,9 +45,6 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 - [X] Screencapture with mss to improve speed
 - [X] Move to tesserocr OCR library (integrates directly with Tesseract’s C++ API for better performance)
 - [X] Multithreading OCR
-- [] Executable package
-- [] Recieve json over tcp, confirm send
-- [] Add total carry, CHS, AOA
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
