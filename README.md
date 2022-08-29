@@ -1,13 +1,14 @@
-# ocr-gspro-interface
+# flightscope-ocr-interface
+
 <div id="top"></div>
 
 <!-- PROJECT LOGO -->
 <br />
 
-  <h3 align="center">OCR interface for GSpro</h3>
+  <h3 align="center">Flightscope OCR interface for GSpro</h3>
 
   <p align="center">
-    An Optical Character Recognition (OCR) interface for GSpro golf simulator!
+    OpenCV OCR interface for GSpro golf simulator!
     <br />
   </p>
 </div>
@@ -19,11 +20,11 @@
 ## About The Project
 
 
-An open source project to intergrate launch monitors using OCR with GSpro's open API.
+An open source project to intergrate launch monitors using OpenCV with GSpro's API.
 
 Here's why:
 * Currently no solution exists for using personal launch monitors ($600-$2000) with gspro.
-* OCR is a passive method to observe data and provide interoperability
+* OCR is a passive method to collect data and provide interoperability via GSP OpenAPI.
 
 
 
@@ -34,11 +35,6 @@ to be added
 ### Prerequisites
 
 iPhone, Mac, and usb lightning cable
-
-* ocr-gspro-interface
-  ```sh
-  PACKAGE COMING SOON
-  ```
 
 
 <!-- USAGE EXAMPLES -->
